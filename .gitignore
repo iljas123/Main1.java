@@ -1,24 +1,89 @@
-# Compiled class file
-*.class
+import java.util.*;
+//rr 0 f 12.12.12 +79649643848
+//rr 1 f 12.12.12 +79649643848
+// по очерёдно вводите это rr "rr 1 f 12.12.12 +79649643848" всё связоно на номере имя дату рождения и факультет можете не менять(допустим придёт сестра когото и возьмёт книгу на его номер и у неё нет телефона) цыфра один это читательский билет
+class book{
+    //книги взяты с первого сайта
+    // читательский билет является индексом списка
+    private String[][] books = {{"Мастер и Маргаритa", "Михаил Булгаков"},{"1984", "Джордж Оруэлл"}, {"Повелитель мух", "Уильям Голдинг"}};
+    public String[][] getbooks() {
+        return books;
+    }
+}
+class Reader{
+    String name;
+    ArrayList<Integer> namberread = new ArrayList<>();
+    String f;
+    String bd;
+    String namber;
+    public Reader(String name,int namberread,String f,String bd, String namber){
+        this.name = name;
+        this.namberread.add(namberread);
+        this.f = f;
+        this.bd = bd;
+        this.namber = namber;
+    }
+    static void Readerlst(java.util.ArrayList<Reader> lst){
+        // сортировка людей по номерам для того чтобы узнать сколько книг прочитал
+        firstBlock:{
+        for (int x = 0;x<lst.toArray().length;x++) {
+            for (int y = 0; y < lst.toArray().length; y++) {
+                Reader lstx = lst.get(x);
+                Reader lsty = lst.get(y);
+                if (y != x && lstx.namber.equals(lsty.namber)) {
+                    lstx.namberread.add(lsty.namberread.get(0));
+                    lst.remove(y);
+                    break firstBlock;
+                }
+            }
+        }
 
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+        }
+    }
+    //перегрузка
+    void takebook(int a){
+        System.out.println(this.name + " взял "+this.namberread.toArray().length+" книги");
+    }
+    void takebook(String[][] books){
+        System.out.print (this.name + " взял книги: ");
+        for(int x = 0;x< this.namberread.toArray().length; x++){
+            System.out.print(books[this.namberread.get(x)][0]);
+            if(x <this.namberread.toArray().length-1){
+                System.out.print(", ");}
+        }
+    }
+    void returnbook(int a){
+        System.out.println(this.name + " взял "+this.namberread.toArray().length+" книги");
+    }
+    void returnbook(String[][] books){
+        System.out.print (this.name + " взял книги: ");
+        for(int x = 0;x< this.namberread.toArray().length; x++){
+            System.out.print(books[this.namberread.get(x)][0]);
+            if(x <this.namberread.toArray().length-1){
+                System.out.print(", ");}
+        }
+    }
+}
+public class Main {
+    public static void main (String args[]){
+        Scanner in = new Scanner(System.in);
+        in.useLocale(Locale.US);
+        ArrayList<Reader> lst = new ArrayList<>(2);
+        while (true){
+            Reader reader = new Reader(in.next(), in.nextInt(), in.next(), in.next(), in.next());
+            lst.add(reader);
+            // сортировка людей по номерам
+            Reader.Readerlst(lst);
+            int x = 0;
+            for(; x <lst.toArray().length;x++){
+                if(reader.namber.equals(lst.get(x).namber)){
+                    break;
+                }
+            }
+            //проработан пока только человек под индексом 0
+            lst.get(x).takebook(x);
+            book boook = new book();
+            lst.get(x).takebook(boook.getbooks());
+        }
+    }
+}
